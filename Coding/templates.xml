@@ -1,0 +1,1422 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><templates><template autoinsert="false" context="org.eclipse.cdt.ui.text.templates.comment" deleted="false" description="author name" enabled="true" id="org.eclipse.cdt.ui.text.templates.comment.author" name="author">author ${user}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Calc the number of k-1s in bit in[0..x]" enabled="true" name="bitdp">
+int f[33][33];
+int L,R;
+
+void init()//预处理f
+{
+	f[0][0] = 1;
+	for (int i = 1; i &lt;= 31; ++i) {
+		f[i][0] = f[i - 1][0];
+		for (int j = 1; j &lt;= i; ++j)
+			f[i][j] = f[i - 1][j] + f[i - 1][j - 1];
+	}
+}
+int calc(int x, int k)//统计[0..x]内二进制表示含k个1的数的个数
+{
+	int tot = 0, ans = 0;//tot记录当前路径上已有的1的数量,ans表示答案
+	for (int i = 31; i &gt; 0; --i) {
+		if (x &amp; (1 &lt;&lt; i)) {
+			++tot;
+			if (tot &gt; k)
+				break;
+		x=x^(1&lt;&lt;i);
+		}
+		if ((1&lt;&lt;(i-1))&lt;=x) {
+		ans+=f[i-1][k-tot];
+		}
+	}
+	if (tot+x==k) ++ans;
+	return ans;
+}
+
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="catch block" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.catch" name="catch">catch (${Exception} e) {
+	${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="class declaration" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.class" name="class">class ${name} {
+public:
+	${cursor}
+
+private:
+};</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Defalut Code For Simple C/C++ Program" enabled="true" name="code">//*****************************************Header************************************************
+//#pragma comment(linker, "/STACK:1024000000,1024000000")
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;vector&gt;
+#include &lt;cctype&gt;
+#include &lt;bitset&gt;
+#include &lt;sstream&gt;
+#include &lt;ctime&gt;
+using namespace std;
+//*****************************************Constant************************************************
+const int MAXN = 100010;
+const int MAXM = 100010;
+const int INF = 1e9+7;
+const double pi = acos(0.0) * 2.0;
+const double eps = 1e-12;
+//*****************************************Input************************************************
+inline int read(int &amp;x){scanf("%d",&amp;x);return x;}
+inline long long read(long long &amp;x){scanf("%I64d",&amp;x);return x;}
+inline char read(char c){c = getchar();return c;}
+inline char* read(char* &amp;x){scanf("%s",x);return x;}
+inline char* readln(char* &amp;x){gets(x);return x;}
+inline string read(string &amp;x){cin &gt;&gt; x;return x;}
+inline string readln(string &amp;x){getline(cin,x);return x;}
+inline float read(float &amp;x){scanf("%f",&amp;x);return x;}
+inline double read(double &amp;x){scanf("%lf",&amp;x);return x;}
+inline void ToString(char* x,string &amp;y){y = x;}
+//inline void ToChar(string x,const char*y){y = x.c_str();}
+template &lt;typename T&gt; inline void read(vector&lt;T&gt; &amp;a,int n){
+	a.clear();		T x;
+	for (int i = 0;i &lt; n;i++)	 a.push_back(read(x));
+}
+template &lt;typename T&gt; inline void read(T a[],int n){
+	for (int i = 0;i &lt; n;i++)	 read(a[i]);
+}
+//*****************************************Output************************************************
+inline int write(int x){printf("%d",x);return x;}
+inline int writeln(int x){printf("%d\n",x);return x;}
+inline long long write(long long x){printf("%I64d",x);return x;}
+inline long long writeln(long long x){printf("%I64d\n",x);return x;}
+inline char write(char c){putchar(c);return c;}
+inline char writeln(char c){putchar(c);putchar('\n');return c;}
+inline char* write(char* x){printf("%s",x);return x;}
+inline char* writeln(char* x){puts(x);return x;}
+inline string write(string x){cout &lt;&lt; x;return x;}
+inline string writeln(string x){cout &lt;&lt; x &lt;&lt; '\n';return x;}
+inline float write(float x){printf("%f",x);return x;}
+inline float writeln(float x){printf("%f\n",x);return x;}
+inline double write(double x){printf("%lf",x);return x;}
+inline double writeln(double x){printf("%lf\n",x);return x;}
+template &lt;typename T&gt; inline void write(vector&lt;T&gt; &amp;a,int n){
+	for (int i = 0;i &lt; n-1;i++)	 {		write(a[i]);		putchar(' ');		}
+	writeln(a[n-1]);
+}
+template &lt;typename T&gt; inline void writeln(vector&lt;T&gt; &amp;a,int n){
+	for (int i = 0;i &lt; n;i++)	writeln(a[i]);
+}
+template &lt;typename T&gt; inline void write(T a[],int n){
+	for (int i = 0;i &lt; n-1;i++)	 {		write(a[i]);		putchar(' ');		}
+	writeln(a[n-1]);
+}
+template &lt;typename T&gt; inline void writeln(T a[],int n){
+	for (int i = 0;i &lt; n;i++)	writeln(a[i]);
+}
+//******************************************Compare*************************************************
+template &lt;class T&gt; inline T abs1(T a) {return a &lt; 0 ? -a : a;}
+template &lt;class T&gt; inline T max1(T a, T b) { return a &gt; b ? a : b; }
+template &lt;class T&gt; inline T max1(T a, T b, T c) { return max1(max1(a, b), c); }
+template &lt;class T&gt; inline T max1(T a, T b, T c, T d) { return max1(max1(a, b, c), d); }
+template &lt;class T&gt; inline T max1(T a, T b, T c, T d, T e) { return max1(max1(a, b, c, d), e); }
+template &lt;class T&gt; inline T min1(T a, T b) { return a &lt; b ? a : b; }
+template &lt;class T&gt; inline T min1(T a, T b, T c) { return min1(min1(a, b), c); }
+template &lt;class T&gt; inline T min1(T a, T b, T c, T d) { return min1(min1(a, b, c), d); }
+template &lt;class T&gt; inline T min1(T a, T b, T c, T d, T e) { return min1(min1(a, b, c, d), e); }
+inline int jud(double a, double b){
+	if(abs(a) &lt; eps &amp;&amp; abs(b) &lt; eps) return 0;
+	else if(abs1(a - b) / abs1(a) &lt; eps) return 0;
+	if(a &lt; b) return -1;
+	return 1;
+}
+template &lt;typename t&gt; inline int jud(t a, t b){
+	if(a &lt; b) return -1;
+	if(a == b) return 0;
+	return 1;
+}
+//*******************************************Code***************************************************
+int N,M,T = INF,Cases = 0;
+
+int main(){
+	//std::ios::sync_with_stdio(false);
+	//read(T);
+	while((T--)&amp;&amp;(~scanf("%d%d",&amp;N,&amp;M))){
+		//if (N||M) break;
+	}
+	
+	return 0;
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="default multiline comment" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.comment" name="comment">
+/*
+ * author ${user}
+ *
+ * To change this generated comment edit the template variable "comment":
+ * Window &gt; Preferences &gt; C/C++ &gt; Editor &gt; Templates.
+ */
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="O(NM)treedp way to solve pack problem with dependence." enabled="true" name="dependentpack">int from[MAXN];//dependence
+long long weight[MAXN],value[MAXN];
+long long f[MAXN][MAXM];
+void treedp(int now,long long m){
+	for (int i = 1;i &lt;= N;i++) if (from[i] == now){//from[i] == now can be replaced by edge[now] to get O(NM+M)
+		for (int j = 0;j &lt;= m-weight[i];j++) f[i][j]= f[now][j]+value[i];
+		treedp(i,m-weight[i]);
+		for (int j = 0;j &lt;= m-weight[i];j++) f[now][j+weight[i]] = max(f[now][j+weight[i]],f[i][j]);
+	}
+}
+//O(NM+N^2)treedp way to solve pack problem with dependence.
+//pack(1..n) without dependence should have from[i] = 0;
+//treedp(0,M) to get f[0][M]</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Dijkstra" enabled="true" name="dijkstra">const int MAXN = 1010;
+const int MAXM = 1010;
+const int INF = 1e9+7;
+
+
+struct Edge{
+	int to,dis;
+};
+
+bool operator &lt;(const Edge &amp;A,const Edge &amp;B){
+	return A.dis &gt; B.dis;
+}
+
+vector&lt;Edge&gt; edge[MAXN];
+int dijkstra[MAXN];
+bool inset[MAXN];
+priority_queue&lt;Edge&gt; que;
+
+void ClearMap(int n){
+	for (int i = 0;i &lt;= n;i++) edge[i].clear();
+	while(!que.empty()) que.pop();
+	fill(dijkstra,dijkstra+n+1,INF);
+	memset(inset,false,sizeof(inset));
+}
+void InsertEdge(int x,int y,int c){
+	Edge tmp;
+	tmp.dis = c;
+	tmp.to = y;	edge[x].push_back(tmp);
+//	tmp.to = x;	edge[y].push_back(tmp);//bidirectional edge
+}
+//remember to ClearMap(N) before Dijkstra(N,S);
+void Dijkstra(int n,int s){
+	dijkstra[s] = 0;
+	for (vector&lt;Edge&gt;::iterator it = edge[s].begin();it != edge[s].end();it++) que.push(*it);
+	inset[s] = true;
+	while(!que.empty()){
+		Edge e = que.top();
+		que.pop();
+		int x = e.to;
+		if (inset[x]) continue;
+		inset[x] = true;
+		dijkstra[x] = e.dis;
+		for (vector&lt;Edge&gt;::iterator it = edge[x].begin();it != edge[x].end();it++){
+			Edge e0 = *it;
+			e0.dis += e.dis;
+			if (!inset[e0.to])que.push(e0);
+		}
+	}
+}
+//O(NlogM) to get single source shortest path dijkstra[] with casual index
+int N,M,K,s;
+int x,y,z;
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic VerSion Of Dinic----MaxFlow Algorithm" enabled="true" name="dinic">const int MAXN = 20020;
+const int MAXM = 200200; //6s左右
+const int INF = 1e9+7; //最大流值
+
+struct Edge
+{
+	int to; 
+	int c;
+	int f;
+	Edge* next;
+	Edge* rev; //对应的反向边
+}node[MAXN],edgeNode[(MAXN*2+MAXM*2)*2];//省去new
+int nodeCnt = 0; //配合edgeNode，每组数据前清零
+int s, t; //源点汇点
+int level[MAXN]; //与源点的bfs距离
+
+void InsertEdge(int from,int to,int c){
+	Edge *edgex = &amp;edgeNode[nodeCnt++];
+	edgex-&gt;to = to; 	edgex-&gt;c = c; 	edgex-&gt;f = 0;
+	edgex-&gt;next = node[from].next;  	node[from].next = edgex;
+	Edge *edgey = &amp;edgeNode[nodeCnt++];
+	edgey-&gt;to = from; 	edgey-&gt;c = c; 	edgey-&gt;f = c;//改为0则为双向边
+	edgey-&gt;next = node[to].next; 	node[to].next = edgey;
+	edgex-&gt;rev = edgey;  	edgey-&gt;rev = edgex;
+}//建图
+
+void ClearEdge(int x){
+	node[x].next = NULL;
+}
+
+void ClearMap(int l,int r){
+	nodeCnt = 0;
+	for (int i = l;i &lt;= r;i++) ClearEdge(i);
+}//图清理
+
+void RebuildEdge(int x){
+	Edge *edge = node[x].next;
+	while(edge){
+		edge-&gt;f = 0;
+		edge = edge-&gt;next;
+	}
+}
+
+void RebuildMap(int l,int r){
+	for (int i = l;i &lt;= r;i++) RebuildEdge(i);
+}//图重构
+
+bool bfs() {
+	memset(level, -1, sizeof(level));
+	queue&lt;int&gt; que; que.push(s); level[s] = 0;
+	while (que.size() != 0) {
+		int i = que.front(); que.pop();
+		for (Edge* it = node[i].next; it != 0; it = it-&gt;next)
+			if (it-&gt;f &lt; it-&gt;c &amp;&amp; level[it-&gt;to] == -1) {
+				que.push(it-&gt;to);
+				level[it-&gt;to] = level[i] + 1;
+			}
+	}
+	return level[t] != -1;
+}//层次图
+
+int dfs(int i = s, int f = INF) {
+	if (f == 0) return 0;
+	if (i == t) return f;
+	int ret = 0;
+	for (Edge* it = node[i].next; it != 0 &amp;&amp; ret &lt; f; it = it-&gt;next)
+		if (level[it-&gt;to] == level[i] + 1) {
+			int val = dfs(it-&gt;to, min(it-&gt;c - it-&gt;f, f - ret));
+			it-&gt;f += val; it-&gt;rev-&gt;f -= val;
+			ret += val;
+		}
+	if (!ret) level[i] = -1;
+	return ret;
+}//增广路
+ int dinic() {
+	 int ret = 0;
+	 while (bfs()) ret += dfs();
+	 return ret;
+ }//dinic
+
+int N,M;
+int x,y,z;</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="(a/b)%m" enabled="true" name="divmod">long long gcd(long long a,long long b){
+	if (a%b==0) return b;
+	else return gcd(b,a%b);
+}//simple version of gcd()
+
+long long extended_gcd(long long a,long long b,long long &amp;x,long long &amp;y){
+	if (b==0){
+		x = 1,y = 0;
+		return a;
+	}
+	else{
+		long long res = extended_gcd(b,a%b,x,y);
+		int t = x;
+		x = y;
+		y = t-(a/b)*y;
+		return res;
+	}
+}//extended_gcd()
+
+long long niyuan(long long n,long long m){
+	//nx-my = b;
+	long long x,y,b= 1,d;
+	d = extended_gcd(n,m,x,y);
+	long long e = x*(b/d)%m;
+	return e;
+}
+
+long long divmod(long long a,long long b,long long m){
+	if (b*m&lt;=INF) return (a%(b*m))/b;
+	if (gcd(b,m) == 1) return a*niyuan(b,m)%m;
+	int d = gcd(b,m);
+	a /= d;
+	b /= d;
+	return divmod(a,b,m);
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="do while statement" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.do" name="do">do {
+	${line_selection}${cursor}
+} while (${condition});</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="else block" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.else" name="else">else {
+	${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="else if block" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.elseif" name="elseif">else if (${condition}) {
+	${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Calculate Euler Function For i&lt;=N" enabled="true" name="euler">const int MAXN = 4000040;
+const int INF = 1e9+7;
+
+long long phi[MAXN];
+
+void Euler(int N){
+	for(int i = 1; i &lt;= N; i ++) phi[i] = i;
+	for(int i = 2; i &lt;= N; i ++)
+		if(phi[i] == i)	for(int j = i; j &lt;= N; j += i)
+				phi[j] = phi[j] / i * (i - 1);
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Calculate Euler Function For i&lt;=N" enabled="true" name="Euler">const int MAXN = 4000040;
+const int INF = 1e9+7;
+
+long long phi[MAXN];
+
+void Euler(int N){
+	for(int i = 1; i &lt;= N; i ++) phi[i] = i;
+	for(int i = 2; i &lt;= N; i ++)
+		if(phi[i] == i)	for(int j = i; j &lt;= N; j += i)
+				phi[j] = phi[j] / i * (i - 1);
+}//Euler's totient function to calculate phi[i],the number of relatively primes of i in[1..i] 
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="extended_gcd" enabled="true" name="extended_gcd">long long extended_gcd(long long a,long long b,long long &amp;x,long long &amp;y){
+	if (b==0){
+		x = 1,y = 0;
+		return a;
+	}
+	else{
+		long long res = extended_gcd(b,a%b,x,y);
+		int t = x;
+		x = y;
+		y = t-(a/b)*y;
+		return res;
+	}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Floyd" enabled="true" name="floyd">const int MAXN = 550;
+const int MAXM = 25500;
+const unsigned long long INF = (-1ULL)&gt;&gt;3;
+
+long long floyd[MAXN][MAXN];
+
+void ClearMap(int n){
+	for (int i = 0;i &lt;= n;i++)
+		for (int j = 0;j &lt;= n;j++)
+			floyd[i][j] = INF;
+	for (int i = 0;i &lt;= n;i++) floyd[i][i] = 0;
+}
+//REMEMBER to ClearMap(N) before Floyd(N);
+void Floyd(int n){
+	for (int k = 1;k &lt;= n;k++)
+		for (int i = 1;i &lt;= n;i++)
+			for (int j = 1;j &lt;= n;j++)
+				floyd[i][j] = min(floyd[i][k]+floyd[k][j],floyd[i][j]);
+}
+//To get the shortest path of any two points with index[1..n] in the graph.
+int N,M,T,Cases = 0;
+int x,y;</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="for loop" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.for" name="for">for (${var} = 0; ${var} &lt; ${max}; ++${var}) {
+	${line_selection}${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="for loop with temporary variable" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.for" name="for">for (int ${var} = 0; ${var} &lt; ${max}; ++${var}) {
+	${line_selection}${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="GCD" enabled="true" name="gcd">long long gcd(long long a,long long b){
+	if (a%b==0) return b;
+	else return gcd(b,a%b);
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="if statement" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.if" name="if">if (${condition}) {
+	${line_selection}${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="if else statement" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.ifelse" name="ifelse">if (${condition}) {
+	${cursor}
+} else {
+	
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Divide&amp;Conquer Algorithm To Calculate Inversions" enabled="true" name="inversion">const int MAXN = 100010;
+const int MAXM = 100010;
+const int INF = 1e9+7;
+
+int A[MAXN],B[MAXN];
+int N,K;
+long long res;
+
+void Inversion(int l,int r){
+	if (l == r) return;
+	long long mid = (l+r)/2;
+	Inversion(l,mid);
+	Inversion(mid+1,r);
+	long long i = l,j = mid+1,k = l;
+	while(i &lt;= mid &amp;&amp; j &lt;= r){
+		if (A[i] &lt;= A[j]) B[k++] = A[i++];
+		else{
+			res += mid-i+1;
+			B[k++] = A[j++];
+		}
+	}
+	while(i &lt;= mid) B[k++] = A[i++];
+	while(j &lt;= r) B[k++] = A[j++];
+	for (i = l;i &lt;= r;i++) A[i] = B[i];
+}
+//Inversion(s,t) to calculate the inversion numbers of a sequence of numbers with index[s,t]
+//also make the sequence[s,t] sorted O(NlogN)</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="A basic version of kmp" enabled="true" name="kmp">int next[MAXN];
+char strA[MAXN];
+char strB[MAXM];
+void findNext(char *strB,int next[]){
+	int M = strlen(strB);
+	int j = -1;
+	next[0] = -1;
+	for (int i = 1;i &lt; M;i++){
+		while(j&gt;=0 &amp;&amp; strB[j+1]!=strB[i]) j = next[j];
+		if (strB[j+1] == strB[i]) j++;
+		next[i] = j;
+	}
+}
+void kmp(char *strB,char *strA,int next[]){
+	findNext(strB,next);
+	int N = strlen(strA);
+	int M = strlen(strB);
+	int cnt = 0;
+	int j = -1;
+	for (int i = 0;i &lt; N;i++){
+		while(j&gt;=0 &amp;&amp; strB[j+1]!=strA[i]) j = next[j];
+		if (strB[j+1] == strA[i]) j++;
+		if (j == M-1) {
+			j = next[j];
+			cnt++;//here we can get the exact positions of strBs;
+		}
+	}
+	cout &lt;&lt; cnt &lt;&lt; endl;//the number of strB in strA
+}
+//O(N+M) kmp algorithm to get whether strB is a substring of strA
+//and how many they are.</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Kruskal" enabled="true" name="kruskal">const int MAXN = 100010;
+const int MAXM = 100010;
+const int INF = 1e9+7;
+
+int father[MAXN];
+int setCnt;
+int kruskal;
+struct Edge{
+	int x,y,c;
+}edge[MAXM];
+
+bool cmp(Edge A,Edge B){
+	return A.c &lt; B.c;
+}
+
+int Top(int x){
+	if (x != father[x]) father[x] = Top(father[x]);
+	return father[x];
+}
+
+void Union(int x,int y,int c){
+	father[x] = y;
+	setCnt--;
+	kruskal+=c;
+}
+
+void Initialize(int n){
+	setCnt = n;
+	kruskal = 0;
+	for (int i = 0;i &lt;= n;i++) father[i] = i;
+}
+//REMEMBER to sort(edge,edge+M,cmp) before Kruskal(N,M)
+void Kruskal(int n,int m){
+	Initialize(n);
+	for (int i = 0;i &lt; m;i++){
+		int fx = Top(edge[i].x);
+		int fy = Top(edge[i].y);
+		if (fx != fy) Union(fx,fy,edge[i].c);
+	}
+}
+
+int N,M,T,K;
+int x,y,c;</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of LCA" enabled="true" name="lca">int father[MAXN];
+vector&lt;int&gt; edge[MAXN];
+bool visited[MAXN];
+int qx,qy,ans;
+
+int top(int x){
+	if (father[x] != x) father[x] = top(father[x]);
+	return father[x];
+}
+//memset(visited,false,sizeof(visited)),clear edge[]
+void lca(int x){
+	father[x] = x;
+	vector&lt;int&gt;::iterator it;
+	for (it = edge[x].begin();it != edge[x].end();it++){
+		lca(*it);
+		father[*it] = x;
+	}
+	visited[x] = true;
+	if (x == qx &amp;&amp; visited[qy]) ans = father[top(qy)];
+		else if (x == qy &amp;&amp; visited[qx]) ans = father[top(qx)];
+	//if there are a lot of querys ,just record them all in an array(O(NM)) or a vector(O(N+M)).
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Transform LCA to RMQ" enabled="true" name="lca2rmq">vector&lt;int&gt; edge[MAXN];
+int N,T,M,root;
+int order[MAXN*2];
+int qx,qy;
+bool isRoot[MAXN];
+int dp[MAXN*2][16];
+int node[MAXN*2],pos[MAXN*2];
+void makermq(int n,int b[])
+{
+	int i,j;
+	for(i=0;i&lt;n;i++)
+		dp[i][0]=b[i];
+	for(j=1;(1&lt;&lt;j)&lt;=n;j++)
+		for(i=0;i+(1&lt;&lt;j)-1&lt;n;i++)
+			dp[i][j]=min(dp[i][j-1],dp[i+(1&lt;&lt;(j-1))][j-1]);
+}
+int rmq(int s,int v)
+{
+	int k=(int)(log((v-s+1)*1.0)/log(2.0));
+	return min(dp[s][k],dp[v-(1&lt;&lt;k)+1][k]);
+}//return a value
+
+void dfs(int x){
+	node[M] = x;
+	pos[x] = M;
+	vector&lt;int&gt;::iterator it;
+	order[M++] = pos[x];
+	for (it = edge[x].begin();it != edge[x].end();it++){
+		dfs(*it);
+		order[M++] = pos[x];
+	}
+}//make the rmq sequence
+void lca2rmq(){
+	dfs(root);
+	makermq(M,order);
+	scanf("%d%d",&amp;qx,&amp;qy);
+	printf("%d\n",node[rmq(min(pos[qx],pos[qy]),max(pos[qx],pos[qy]))]);
+}
+//change the online lca to rmq(O(NlogN+M))</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="main method" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.main" name="main">int main(int argc, char **argv) {
+	${cursor}
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Multiple In Matrix" enabled="true" name="matrixmul">
+int N,mod;
+
+struct Matrix{
+	static const int matn = 16;
+	int m[matn][matn];
+}mat,tmp;
+
+Matrix operator *(Matrix A,Matrix B){
+	Matrix C;
+	memset(C.m,0,sizeof(C.m));
+	for (int i = 0;i &lt; Matrix::matn;i++)
+		for (int j = 0;j &lt; Matrix::matn;j++)
+			for (int k = 0;k &lt; Matrix::matn;k++)
+				C.m[i][j] = (C.m[i][j]+A.m[i][k]*B.m[k][j])%mod;
+	return C;
+}
+
+Matrix MatrixMul(Matrix mat,int n){
+	if (n == 1) return mat;
+	tmp = MatrixMul(mat,n/2);
+	if (n%2) return tmp*tmp*mat;
+	else return tmp*tmp;
+}
+//Matrix A^n%mod</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Template Of Matrix" enabled="true" name="matrixt">template &lt;typename t&gt; struct matrix{
+	const static int maxn = 60;
+	int row, col;
+	t mat[maxn][maxn];
+
+	matrix(int r = 0, int c = 0){
+		row = r; col = c;
+		for(int i = 0; i &lt; row; i++) for(int j = 0; j &lt; col; j++) mat[i][j] = 0;
+	}
+	const t * operator[] (int i) const {
+		return mat[i];
+	}
+	t * operator[] (int i) {
+		return mat[i];
+	}
+	bool danweiju(){
+		if(row != col) return 0;
+		for(int i = 0; i &lt; row; i++) for(int j = 0; j &lt; col; j++) mat[i][j] = bool (i == j);
+		return 1;
+	}
+	matrix operator * (const matrix&amp; b) const{
+		int i, j, k;
+		matrix &lt;t&gt; c(row, b.col);
+		memset(c.mat, 0, sizeof(c.mat));
+		for (i = 0; i &lt; c.row; i++) for (k = 0; k &lt; col; k++)
+			if(mat[i][k])
+				for (j = 0; j &lt; c.col; j++){
+					c.mat[i][j] += mat[i][k] * b.mat[k][j];
+				}
+		return c;
+	}
+	matrix operator + (const matrix&amp; b) const{
+		matrix &lt;t&gt; c(max1(row, b.row), max1(col, b.col));
+		for(int i = 0; i &lt; c.row; i++) for(int j = 0; j &lt; c.col; j++){
+			t a = 0; if(i &lt; row &amp;&amp; j &lt; col) a = mat[i][j];
+			t b1 = 0; if(i &lt; b.row &amp;&amp; j &lt; b.col) b1 = b.mat[i][j];
+			c.mat[i][j] = a + b1;
+		}
+		return c;
+	}
+	matrix operator - (const matrix&amp; b) const{
+		matrix &lt;t&gt; c(max1(row, b.row), max1(col, b.col));
+		for(int i = 0; i &lt; c.row; i++) for(int j = 0; j &lt; c.col; j++){
+			t a = 0; if(i &lt; row &amp;&amp; j &lt; col) a = mat[i][j];
+			t b1 = 0; if(i &lt; b.row &amp;&amp; j &lt; b.col) b1 = b.mat[i][j];
+			c.mat[i][j] = a - b1;
+		}
+		return c;
+	}
+	inline void operator = (const matrix &amp; b){
+		memcpy(mat, b.mat, sizeof(mat));
+		col = b.col;  row = b.row;
+	}
+	matrix pow(long long n){
+		matrix &lt;t&gt; ans(row, col), temp = *this;
+
+		ans.danweiju();
+		while(n){
+			if(n &amp; 1) ans = ans * temp;
+			temp = temp * temp;
+			n &gt;&gt;= 1;
+		}
+		return ans;
+	}
+	matrix addpow(long long n) {// calculate 1 + m + m ^ 2 + ... + m ^ n
+		n++;
+		matrix &lt;t&gt; ans(row, col), temp = *this, temp1(row, col), ans1(row, col);
+
+		ans.danweiju(); temp1.danweiju();
+		while(n){
+			if(n &amp; 1){
+				ans1 = ans1 + ans * temp1;
+				temp1 = temp * temp1;
+			}
+			ans = ans + ans * temp;
+			temp = temp * temp;
+			n &gt;&gt;= 1;
+		}
+		return ans1;
+	}
+	int inv(){
+		int i, j, k, is[maxn], js[maxn];
+		double t1;
+
+		if (row != col) return 0;
+		for(k = 0; k &lt; row; k++){
+			for(t1 = 0,i = k; i &lt; row; i++) for(j = k; j &lt; row; j++)
+				if(fabs(mat[i][j]) &gt; t1)
+					t1=fabs(mat[is[k] = i][js[k] = j]);
+			if (fabs(t1 - 0) &lt; 1e-9) return 0;
+			if (is[k] != k) for(j = 0; j &lt; row; j++)
+				t1 = mat[k][j], mat[k][j] = mat[is[k]][j], mat[is[k]][j] = t1;
+			if (js[k] != k) for (i = 0; i &lt; row; i++)
+				t1 = mat[i][k], mat[i][k] = mat[i][js[k]], mat[i][js[k]] = t1;
+			mat[k][k] = 1 / mat[k][k];
+			for(j = 0; j &lt; row; j++) if (j != k)
+				mat[k][j] *= mat[k][k];
+			for (i = 0; i &lt; row; i++)	if (i != k)
+				for (j = 0; j &lt; row; j++) if (j != k)
+					mat[i][j] -= mat[i][k] * mat[k][j];
+			for (i = 0;i &lt; row; i++) if (i != k)
+				mat[i][k] *= -mat[k][k];
+		}
+		for (k = row-1; k &gt;= 0; k--){
+			for (j = 0; j &lt; row; j++) if (js[k] != k)
+					t1 = mat[k][j], mat[k][j] = mat[js[k]][j], mat[js[k]][j]=t1;
+			for (i = 0; i &lt; row; i++) if (is[k] != k)
+				t1 = mat[i][k], mat[i][k] = mat[i][is[k]], mat[i][is[k]] = t1;
+		}
+		return 1;
+	}
+	double det(){
+		int i, j, k, sign = 0;
+		double b[maxn][maxn], ret = 1, t1;
+
+		if (row != col) return 0;
+		for (i = 0; i &lt; row; i++) for (j = 0; j &lt; col; j++)
+			b[i][j] = mat[i][j];
+		for (i = 0; i &lt; row; i++){
+			if (fabs(b[i][i] - 0) &lt; 1e-9){
+				for (j = i + 1; j &lt; row; j++)
+					if (fabs(b[j][i] - 0) &gt; 1e-9) break;
+					if (j == row) return 0;
+					for (k = i; k &lt; row; k++)
+						t1 = b[i][k], b[i][k] = b[j][k], b[j][k] = t1;
+					sign++;
+			}
+			ret *= b[i][i];
+			for (k = i + 1; k &lt; row; k++) b[i][k] /= b[i][i];
+			for (j = i + 1; j &lt; row; j++) for (k = i + 1; k &lt; row; k++)
+				b[j][k] -= b[j][i] * b[i][k];
+		}
+		if (sign &amp; 1) ret = -ret;
+		return ret;
+	}
+};</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="O(NM)solution to calc the num of packs which can't hold the things left" enabled="true" name="MeanPack">long long Ans;
+long long weight[MAXN];
+long long f[MAXM];
+void MeanPack(long long f[]){
+	memset(f,0,MAXM*8);
+	f[0] = 1;
+	Ans = 0;
+	long long sum = 0;
+	for (int i = 0;i &lt; N;i++) sum += weight[i];
+	if (weight[0] &gt; M) return;
+	for (int i = N-1;i &gt;= 0;i--){
+		int lj = max1(M-sum+1,0LL);
+		sum -= weight[i];
+		for (int j = M-sum;j &gt;= lj;j--) Ans += f[j];
+		for (int j = M;j &gt;= weight[i];j--) f[j] += f[j-weight[i]];
+	}
+}
+//O(NM)solution to calc the num of pack solutions which can't hold the things left</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="O(NM)&amp;&amp;//O(NMlogM)Version Of Multiple Pack To Calculate min||max value" enabled="true" name="multipack">long long N,M,S,T = INF,Cases = 0;
+long long weight[MAXN],num[MAXN],value[MAXN];
+long long f[MAXM];
+void ZeroOnePack(long long f[],int i){
+	for (int j = M;j &gt;= weight[i];j--)
+		f[j] = min1(f[j],f[j-weight[i]]+value[i]);
+}
+void CompletePack(long long f[],int i){
+	for (int j = weight[i];j &lt;= M;j++)
+		f[j] = min1(f[j],f[j-weight[i]]+value[i]);
+}
+//void MultiPack(long long f[],int i){
+//	long long n = num[i],j = 1;
+//	while(n){
+//		if (n &gt;= j) weight[N] = weight[i]*j,value[N] = value[i]*j,n -= j;
+//		else weight[N] = weight[i]*n,value[N] = value[i]*n,n -= n;//bit trick,remember to change the value in different conditions
+//		ZeroOnePack(f,N);
+//		j &lt;&lt;= 1;
+//	}
+//}
+//void MultiplePack(long long f[]){
+//	fill(f,f+M+1,INF);
+//	f[0] = 0;
+//	for (int i = 0;i &lt; N;i++){
+//		if (num[i] == 1) ZeroOnePack(f,i);
+//		else if (num[i]*weight[i] &gt;= M) CompletePack(f,i);
+//		else MultiPack(f,i);
+//	}
+//}
+int pos[MAXM];//at most M positions
+int front,back;//far more faster than deque
+void MultiplePack(long long f[]){
+	fill(f,f+M+1,INF);
+	f[0] = 0;//exactly the weight
+	for (int i = 0;i &lt; N;i++)
+		if (num[i] == 1) ZeroOnePack(f,i);
+		else if (num[i]*weight[i] &gt;= M) CompletePack(f,i);//necessarily(one third time)
+		else	for (int d = 0;d &lt; weight[i];d++){ //the distance
+			front = 0;
+			back = -1;
+			int mj = (M-d)/weight[i];
+			for (int j = 0;j &lt;= mj;j++){
+				int now = j*weight[i]+d; //transform
+				while(front &lt;= back &amp;&amp; f[pos[back]*weight[i]+d]-pos[back]*value[i] &gt; f[now]-j*value[i]) back--;
+				pos[++back] = j;
+				if (pos[front]&lt;j-num[i]) front++; //O(n)queue(min-first),change the '&gt;' to get a max value
+				f[now] = f[pos[front]*weight[i]+d]-pos[front]*value[i]+j*value[i];//update
+			}
+		}
+}//O(NM)&amp;&amp;//O(NMlogM)Version Of Multiple Pack To Calculate min||max value</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="O(NM)&amp;&amp;//O(NMlogM)Version Of Multiple Pack To Judge whether we can get  a pack with some weight" enabled="true" name="multipack01">int N,M,Ans;
+int weight[MAXN],num[MAXN];
+bool f[MAXM];
+
+void ZeroOnePack(int i){
+	for (int j = M;j &gt;= weight[i];j--)
+		if (f[j-weight[i]]) f[j] = true;
+}
+void CompletePack(int i){
+	for (int j = weight[i];j &lt;= M;j++)
+		if (f[j-weight[i]]) f[j] = true;
+}
+//void MultiPack(int i){
+//	int n = num[i],j = 1;
+//	while(n){
+//		if (n &gt;= j) weight[N] = weight[i]*j,n -= j;
+//		else weight[N] = weight[i]*n,n -= n;
+//		limit[N] = M;
+//		ZeroOnePack(N);
+//		j &lt;&lt;= 1;
+//	}
+//}
+//void MultiplePack(){
+//	memset(f,false,MAXM*sizeof(f));
+//	f[0] = true;
+//	for (int i = 0;i &lt; N;i++){
+//		if (num[i] == 1) ZeroOnePack(i);
+//		else if (num[i]*weight[i] &gt;= M) CompletePack(i);
+//		else MultiPack(i);
+//	}
+//}
+
+void MultiplePack(){
+	memset(f,false,MAXM*sizeof(f));
+	f[0] = true;//exactly the weight
+	for (int i = 0;i &lt; N;i++){
+		if (num[i] == 1) ZeroOnePack(i);
+		else if (num[i]*weight[i] &gt;= M) CompletePack(i);//necessarily
+		else	for (int d = 0;d &lt; weight[i];d++){
+			int pos = -d;//just record the last true
+			int mj = (M-d)/weight[i];
+			for (int j = 0;j &lt;= mj;j++){
+				int now = j*weight[i]+d;
+				if  (f[now]) pos = j;
+				if(pos&gt;=0 &amp;&amp; j - pos &lt;= num[i]) f[now] = true;
+			}
+		}
+	}
+}
+//O(NM)&amp;&amp;//O(NMlogM)Version Of Multiple Pack To Judge whether we can get  a pack with some weight</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="namespace declaration" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.namespace" name="namespace">namespace ${name} {
+
+${cursor}
+
+}  // namespace ${name}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="create new object" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.new" name="new">${type} ${name} = new ${type}(${arguments});</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="niyuan" enabled="true" name="niyuan">long long extended_gcd(long long a,long long b,long long &amp;x,long long &amp;y){
+	if (b==0){
+		x = 1,y = 0;
+		return a;
+	}
+	else{
+		long long res = extended_gcd(b,a%b,x,y);
+		int t = x;
+		x = y;
+		y = t-(a/b)*y;
+		return res;
+	}
+}
+
+long long niyuan(long long n,long long m){
+	//nx-my = b;
+	long long x,y,b= 1,d;
+	d = extended_gcd(n,m,x,y);
+	long long e = x*(b/d)%m;
+	return e;
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Prim" enabled="true" name="prim">const int MAXN = 510;
+const int MAXM = 50050;
+const int INF = 1e9+7;
+
+
+int graph[MAXN][MAXN];
+int dis[MAXN];
+bool inset[MAXN];
+int prim;
+
+bool Prim(int n){
+	prim = 0;
+	for (int i = 1;i &lt;= n;i++) dis[i] = graph[1][i];
+	memset(inset,false,sizeof(inset));
+	inset[1] = true;
+	for (int i = 1;i &lt; n;i++){
+		int p = 0,d = INF;
+		for (int j = 1;j &lt;= n;j++){
+			if (!inset[j] &amp;&amp; dis[j] &lt; d){
+				d = dis[j];
+				p = j;
+			}
+		}
+		prim += d;
+		inset[p] = true;
+		for (int j = 1;j &lt;= n;j++)
+			if (graph[p][j] &lt; dis[j]) dis[j] = graph[p][j];
+	}
+	return !inset[0];
+}
+//O(N^2)MST solution,better than kruskal when edges are everywhere.
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version To Generate Prime Chart &amp;&amp; Split Numbers" enabled="true" name="prime">const int MAXN = 100010;
+const int MAXM = 10010;
+
+int primeChart[MAXM];
+bool isPrime[MAXN];
+int primeCnt;
+int N,M,T;
+int split[MAXM][2];
+int splitCnt;
+
+void MakePrimeChart(int cell){
+	primeCnt = 0;
+	memset(isPrime,true,sizeof(isPrime));
+	isPrime[0] = isPrime[1] = false;
+	for (int i = 2;i &lt; cell;i++){
+		if (!isPrime[i]) continue;
+		primeChart[primeCnt++] = i;
+		for (int j = 2;j &lt;= cell/i;j++) isPrime[i*j] = false;
+	}
+}//just calculate sqrt(maxnum) to make sure Split(x) works well
+
+void Split(int x){
+	int p = 0;
+	memset(split,0,sizeof(split));
+	splitCnt = 0;
+	while(x &gt; 1 &amp;&amp; p &lt; primeCnt){
+		if (x%primeChart[p] == 0) split[++splitCnt][0] = primeChart[p];
+		while(x%primeChart[p] == 0) split[splitCnt][1]++,x/=primeChart[p];
+		p++;
+	}
+	if (x &gt; 1) split[++splitCnt][0] = x,split[splitCnt][1]++;//Big Prime!
+	for (int i = splitCnt;i &gt; 1;i--) cout &lt;&lt; split[i][0] &lt;&lt; " " &lt;&lt; split[i][1] &lt;&lt; " ";
+	cout &lt;&lt; split[1][0] &lt;&lt; " " &lt;&lt; split[1][1] &lt;&lt; "\n";
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Quick Power" enabled="true" name="quickpow">long long quickpow(long long n, long long m, long long mod = 0){
+    if(m &lt; 0) return 0;
+    long long ans = 1;
+    long long k = n;
+    while(m){
+        if(m &amp; 1) {
+            ans *= k;
+            if(mod) ans %= mod;
+        }
+        k *= k;
+        if(mod) k %= mod;
+        m &gt;&gt;= 1;
+    }
+    return ans;
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="WJMZBMR" enabled="true" name="quicksegtree">int get(int x, int y) {
+	if (x == -1 || y == -1)
+		return x == -1 ? y : x;
+	return a[x] &gt; a[y] ? x : y;
+}
+
+struct Tree {
+	Tree*pl, *pr;
+	int l, r, mx;
+	int64 sum;
+
+	void update() {
+		mx = get(pl-&gt;mx, pr-&gt;mx);
+		sum = pl-&gt;sum + pr-&gt;sum;
+	}
+
+	Tree(int l, int r) :
+			l(l), r(r) {
+		if (l + 1 == r) {
+			sum = a[l];
+			mx = l;
+			return;
+		}
+		pl = new Tree(l, l + r &gt;&gt; 1);
+		pr = new Tree(l + r &gt;&gt; 1, r);
+		update();
+	}
+
+	void change(int p, int x) {
+		if (p &lt; l || p &gt;= r)
+			return;
+		if (l + 1 == r) {
+			sum = x;
+			a[l] = x;
+			return;
+		}
+		pl-&gt;change(p, x);
+		pr-&gt;change(p, x);
+		update();
+	}
+
+	int queryMax(int L, int R) {
+		if (L &lt;= l &amp;&amp; R &gt;= r) {
+			return mx;
+		}
+		if (L &gt;= r || l &gt;= R)
+			return -1;
+		return get(pl-&gt;queryMax(L, R), pr-&gt;queryMax(L, R));
+	}
+
+	int64 querySum(int L, int R) {
+		if (L &lt;= l &amp;&amp; R &gt;= r) {
+			return sum;
+		}
+		if (L &gt;= r || l &gt;= R)
+			return 0;
+		return pl-&gt;querySum(L, R) + pr-&gt;querySum(L, R);
+	}
+}*rt;</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of RMQ" enabled="true" name="rmq">int dp[MAXN*2][16];
+void makermq(int n,int b[])
+{
+	int i,j;
+	for(i=0;i&lt;n;i++)
+		dp[i][0]=b[i];
+	for(j=1;(1&lt;&lt;j)&lt;=n;j++)
+		for(i=0;i+(1&lt;&lt;j)-1&lt;n;i++)
+			dp[i][j]=min(dp[i][j-1],dp[i+(1&lt;&lt;(j-1))][j-1]);
+}
+int rmq(int s,int v)
+{
+	int k=(int)(log((v-s+1)*1.0)/log(2.0));
+	return min(dp[s][k],dp[v-(1&lt;&lt;k)+1][k]);
+}//return the minmum value
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version of Segment Tree" enabled="true" name="segtree">//#pragma comment(linker, "/STACK:1024000000,1024000000")
+//#include &lt;iostream&gt;
+//#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;vector&gt;
+#include &lt;cctype&gt;
+#include &lt;bitset&gt;
+//#include &lt;sstream&gt;
+#include &lt;ctime&gt;
+
+using namespace std;
+
+const int MAXN = 50010*4;
+const int INF = 1e9+7;
+//禁用iostream,iomanip,sstream
+int lbound[MAXN]; //左端点
+int rbound[MAXN]; //右端点
+int lchild[MAXN]; //左子结点 -1为空
+int rchild[MAXN]; //右子节点 -1为空
+int val[MAXN]; //覆盖个数
+int sum[MAXN]; //区间和
+int add[MAXN]; //区间操作
+int nxt,root;//节点数，根节点
+
+int build(int l, int r)
+{
+	int i = nxt++, mid = (l + r) / 2;
+	lbound[i] = l; rbound[i] = r;
+	if (r == l) return i;
+	lchild[i] = build(l, mid);
+	rchild[i] = build(mid + 1, r);
+	return i;
+}
+void buildtree(int l,int r){//建树
+	nxt = 0;
+	memset(add,0,sizeof(add));
+	memset(sum,0,sizeof(sum));
+	memset(val,0,sizeof(val));
+	root = build(l,r);
+}
+int query(int pos){//单点查询
+	int i = 0, ret = 0;
+	while (i != -1) {
+		ret += val[i];
+		int mid = (lbound[i] + rbound[i]) / 2;
+		i = pos &lt;= mid ? lchild[i] : rchild[i];
+	}
+	return ret;
+}
+int get(int i){
+	if (i == -1) return 0;
+	return sum[i] + add[i] * (rbound[i] - lbound[i] + 1);
+}
+void update(int i){
+	sum[i] = get(lchild[i]) + get(rchild[i]);
+}
+void update(int l, int r, int val, int i = root) {//lazy修改
+	if (i == -1) return;
+	if (l &lt;= lbound[i] &amp;&amp; rbound[i] &lt;= r)
+		add[i] += val;
+	else if (lbound[i] &lt;= r &amp;&amp; rbound[i] &gt;= l) {
+		update(l, r, val, lchild[i]);
+		update(l, r, val, rchild[i]);
+		update(i);
+	}
+}
+void pushdown(int i){//lazy标记下放
+	if (lchild[i] != -1) add[lchild[i]] += add[i];
+	if (rchild[i] != -1) add[rchild[i]] += add[i];
+	sum[i] += add[i] * (rbound[i] - lbound[i] + 1);
+	add[i] = 0;
+}
+int query(int l, int r, int i = root){//区间查询
+	if (i == -1) return 0;
+	if (l &lt;= lbound[i]  &amp;&amp; r &gt;= rbound[i]) return get(i);
+	else if (lbound[i] &lt;= r &amp;&amp; l &lt;= rbound[i]) {
+		pushdown(i);
+		return query(l, r, lchild[i])+query(l, r, rchild[i]);
+	}
+	else return 0;
+}
+
+int T,N,x,y,z,Cases = 0;
+char s[10];</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of SPFA" enabled="true" name="spfa">const int MAXN = 1010;
+const int MAXM = 1010;
+const int INF = 1e9+7;
+
+struct Edge{
+	int to,dis;
+};
+
+vector&lt;Edge&gt; edge[MAXN];
+int spfa[MAXN];
+bool exist[MAXN];
+queue&lt;int&gt; que;
+
+void ClearMap(int n){
+	memset(exist,false,sizeof(exist));
+	for (int i = 0;i &lt;= n;i++) edge[i].clear();
+	while(!que.empty()) que.pop();
+}
+void InsertEdge(int x,int y,int c){
+	Edge tmp;
+	tmp.dis = c;
+	tmp.to = y;	edge[x].push_back(tmp);
+//	tmp.to = x;	edge[y].push_back(tmp);//bidirectional edge
+}
+//REMEMBER to ClearMap(N) before SPFA(N,S)
+void SPFA(int n,int s){
+	que.push(s);
+	fill(spfa,spfa+n+1,INF);//ctrl the INF
+	spfa[s] = 0;
+	exist[s] = true;
+	while(!que.empty()){
+		int x = que.front();
+		que.pop();
+		vector&lt;Edge&gt;::iterator it;
+		for (it = edge[x].begin();it != edge[x].end();it++){
+			int y = it-&gt;to;
+			int z = it-&gt;dis;
+			if (spfa[x]+z &lt; spfa[y]){
+				spfa[y] = spfa[x]+z;
+				if (!exist[y]) {
+					que.push(y);
+					exist[y] = true;
+				}
+			}
+		}
+		exist[x] = false;
+	}
+}
+//single source shortest path fast algorithm,may not perform well when graph looks like grids.
+int N,M,K,s;
+int x,y,z;
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="print to standard error" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.fprintf" name="stderr">fprintf(stderr, ${cursor});</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="print to standard output" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.printf" name="stdout">printf(${cursor});</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Overall Min Cut Algorithm" enabled="true" name="stoerwagner">const int MAXN = 220;
+const int MAXM = 40400;
+const int INT_MAX = 1e9+7;
+
+bool visited[MAXN];
+int dis[MAXN];
+bool combined[MAXN];
+int graph[MAXN][MAXN];
+int s, t, minCut,x,y,z;
+int N,M,T,Cases = 0;
+
+void Prim(){
+     int i, j, Max, tmp;
+     memset(visited, false, sizeof(visited));
+     memset(dis, 0, sizeof(dis));
+     s = t = -1;
+     for (i = 1; i &lt;= N; i++){
+         Max = -INT_MAX;
+         for (j = 1; j &lt;= N; j++){
+             if (!combined[j] &amp;&amp; !visited[j] &amp;&amp; dis[j] &gt; Max){
+                tmp = j;
+                Max = dis[j];
+             }
+         }
+         if (t == tmp) return;
+         s = t; t = tmp;
+         minCut = Max;
+         visited[tmp] = true;
+         for (j = 1; j &lt;= N; j++){
+             if (!combined[j] &amp;&amp; !visited[j]){
+                dis[j] += graph[tmp][j];
+             }
+         }
+     }
+}
+int StoerWagner(){
+    int i, j;
+    memset(combined, false, sizeof(combined));
+    int ans = INT_MAX;
+    for (i = 1; i &lt; N; i++){
+        Prim();
+        if (minCut &lt; ans) ans = minCut;
+        if (ans == 0) return 0;
+        combined[t] = true;
+        for (j = 1; j &lt;= N; j++){
+            if (!combined[j]){
+               graph[s][j] += graph[t][j];
+               graph[j][s] += graph[j][t];
+            }
+        }
+    }
+    return ans;
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="switch case statement" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.switch" name="switch">switch (${key}) {
+	case ${value}:
+		${cursor}
+		break;
+	default:
+		break;
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="tmpcode" enabled="true" name="tmpcode">#include &lt;iostream&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstring&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;map&gt;
+#include &lt;set&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+const int MAXN = 10010;
+const int MAXM = 10010;
+const int INF = 1e9+7;
+const double eps = 1e-10;
+
+int N,M;
+
+int main(){
+//	ios::sync_with_stdio(false);//If printf() is used,delete this line.
+	while(~scanf("%d%d",&amp;N,&amp;M)){
+		printf("%d\n",N+M);
+	}
+	return 0;
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="For TC-SRM" enabled="true" name="topcoder">//*****************************************Header************************************************
+//#pragma comment(linker, "/STACK:1024000000,1024000000")
+#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
+#include &lt;cstdio&gt;
+#include &lt;cstdlib&gt;
+#include &lt;cstring&gt;
+#include &lt;cmath&gt;
+#include &lt;algorithm&gt;
+#include &lt;set&gt;
+#include &lt;map&gt;
+#include &lt;queue&gt;
+#include &lt;stack&gt;
+#include &lt;vector&gt;
+#include &lt;cctype&gt;
+#include &lt;bitset&gt;
+#include &lt;sstream&gt;
+#include &lt;ctime&gt;
+using namespace std;
+//*****************************************Constant************************************************
+const int MAXN = 100010;
+const int MAXM = 100010;
+const int INF = 1e9+7;
+const double pi = acos(0.0) * 2.0;
+const double eps = 1e-12;
+//*****************************************Input************************************************
+inline int read(int &amp;x){scanf("%d",&amp;x);return x;}
+inline char read(char c){c = getchar();return c;}
+inline char* read(char* &amp;x){scanf("%s",x);return x;}
+inline char* readln(char* &amp;x){gets(x);return x;}
+inline string read(string &amp;x){cin &gt;&gt; x;return x;}
+inline string readln(string &amp;x){getline(cin,x);return x;}
+inline float read(float &amp;x){scanf("%f",&amp;x);return x;}
+inline double read(double &amp;x){scanf("%lf",&amp;x);return x;}
+inline void ToString(char* x,string &amp;y){y = x;}
+//inline void ToChar(string x,const char*y){y = x.c_str();}
+template &lt;typename T&gt; inline void read(vector&lt;T&gt; &amp;a,int n){
+	a.clear();		T x;
+	for (int i = 0;i &lt; n;i++)	 a.push_back(read(x));
+}
+template &lt;typename T&gt; inline void read(T a[],int n){
+	for (int i = 0;i &lt; n;i++)	 read(a[i]);
+}
+//*****************************************Output************************************************
+inline int write(int x){printf("%d",x);return x;}
+inline int writeln(int x){printf("%d\n",x);return x;}
+inline char write(char c){putchar(c);return c;}
+inline char writeln(char c){putchar(c);putchar('\n');return c;}
+inline char* write(char* x){printf("%s",x);return x;}
+inline char* writeln(char* x){puts(x);return x;}
+inline string write(string x){cout &lt;&lt; x;return x;}
+inline string writeln(string x){cout &lt;&lt; x &lt;&lt; '\n';return x;}
+inline float write(float x){printf("%f",x);return x;}
+inline float writeln(float x){printf("%f\n",x);return x;}
+inline double write(double x){printf("%lf",x);return x;}
+inline double writeln(double x){printf("%lf\n",x);return x;}
+template &lt;typename T&gt; inline void write(vector&lt;T&gt; &amp;a,int n){
+	for (int i = 0;i &lt; n-1;i++)	 {		write(a[i]);		putchar(' ');		}
+	writeln(a[n-1]);
+}
+template &lt;typename T&gt; inline void writeln(vector&lt;T&gt; &amp;a,int n){
+	for (int i = 0;i &lt; n;i++)	writeln(a[i]);
+}
+template &lt;typename T&gt; inline void write(T a[],int n){
+	for (int i = 0;i &lt; n-1;i++)	 {		write(a[i]);		putchar(' ');		}
+	writeln(a[n-1]);
+}
+template &lt;typename T&gt; inline void writeln(T a[],int n){
+	for (int i = 0;i &lt; n;i++)	writeln(a[i]);
+}
+//******************************************Compare*************************************************
+template &lt;class T&gt; inline T abs1(T a) {return a &lt; 0 ? -a : a;}
+template &lt;class T&gt; inline T max1(T a, T b) { return a &gt; b ? a : b; }
+template &lt;class T&gt; inline T max1(T a, T b, T c) { return max1(max1(a, b), c); }
+template &lt;class T&gt; inline T max1(T a, T b, T c, T d) { return max1(max1(a, b, c), d); }
+template &lt;class T&gt; inline T max1(T a, T b, T c, T d, T e) { return max1(max1(a, b, c, d), e); }
+template &lt;class T&gt; inline T min1(T a, T b) { return a &lt; b ? a : b; }
+template &lt;class T&gt; inline T min1(T a, T b, T c) { return min1(min1(a, b), c); }
+template &lt;class T&gt; inline T min1(T a, T b, T c, T d) { return min1(min1(a, b, c), d); }
+template &lt;class T&gt; inline T min1(T a, T b, T c, T d, T e) { return min1(min1(a, b, c, d), e); }
+inline int jud(double a, double b){
+	if(abs(a) &lt; eps &amp;&amp; abs(b) &lt; eps) return 0;
+	else if(abs1(a - b) / abs1(a) &lt; eps) return 0;
+	if(a &lt; b) return -1;
+	return 1;
+}
+template &lt;typename t&gt; inline int jud(t a, t b){
+	if(a &lt; b) return -1;
+	if(a == b) return 0;
+	return 1;
+}
+//*******************************************Code***************************************************
+
+class classname{
+public:
+	void functionname(){}
+
+};
+
+
+
+int n,m;
+classname cla;
+vector&lt;int&gt; v;
+int main(){
+	read(n);
+	read(m);
+	read(v,n);
+	//cout &lt;&lt; cla.functionname() &lt;&lt; endl;
+	return 0;
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="Basic Version Of Topo Sort(lexicographic order)" enabled="true" name="topo">const int MAXN = 1010;
+const int MAXM = 1010;
+const int INF = 1e9+7;
+
+priority_queue&lt;int, vector&lt;int&gt;, greater&lt;int&gt; &gt; que;
+int topo[MAXN];
+int topoCnt;
+bool exist[MAXN];
+vector&lt;int&gt; edges[MAXN];
+int d[MAXN];
+
+void InsertEdge(int x,int y){
+	edges[x].push_back(y);
+	d[y]++;
+}
+
+void ClearMap(int n){
+	topoCnt = 0;
+	memset(exist,0,sizeof(exist));
+	memset(d,0,sizeof(d));
+	while(!que.empty()) que.pop();
+	for (int i = 0;i &lt;= n;i++) edges[i].clear();
+}
+//REMEMBER to ClearMap(N) before Topo(N)
+bool Topo(int n){
+	que.push(0);
+	while(!que.empty()){
+		int now = que.top();
+		que.pop();
+		topo[topoCnt++] = now;
+		for(vector&lt;int&gt;::iterator it = edges[now].begin();it != edges[now].end();it++){
+			int next = *it;
+			if (--d[next] == 0){
+				que.push(next);
+				exist[next] = true;
+			}
+		}
+	}
+	if (topoCnt &lt; n+1) return false;
+	else return true;
+}//return whether the graph is topoable.
+//make topo[] the lexicographically smallest topo sequence.
+int N,M;
+int x,y;</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="try catch block" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.try" name="try">try {
+	${line_selection}${cursor}
+} catch (${Exception} e) {
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="unionset" enabled="true" name="unionset">int father[MAXN];
+int setCnt;
+
+int top(int x){
+	if (father[x] != x) father[x] = top(father[x]);
+	return father[x];
+}
+
+void join(int x,int y){
+	int fx = top(x);
+	int fy = top(y);
+	if (fx != fy) father[fx] = fy,setCnt--;
+}
+
+void setInit(int n){
+	for (int i = 0;i &lt;= n;i++) father[i] = i;
+	setCnt = n;
+}
+</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="upc_forall loop" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.upc_forall" name="upc_forall">upc_forall (${var} = 0; ${var} &lt; THREADS; ${var}++; ${var}) {
+	${line_selection}${cursor}
+}</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="UPC_MAX_BLOCKSIZE keyword" enabled="true" id="org.eclipse.cdt.ui.text.templates.c.upc_max_blocksize" name="upc_max_blocksize">UPC_MAX_BLOCKSIZE</template><template autoinsert="true" context="org.eclipse.cdt.ui.text.templates.c" deleted="false" description="using a namespace" enabled="true" id="org.eclipse.cdt.ui.text.templates.cpp.using" name="using">using namespace ${name};
+</template></templates>
